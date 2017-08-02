@@ -4,25 +4,14 @@ import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 public class BodyBuilder {
-    public static RequestBody bodyBuilder(int w, int h, int n, int width, int height) {
+    public static RequestBody bodyBuilder(int paneWidth, int paneHeight, int quantity, String glassType) {
         return new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("account", "Ivan's Windows")
-                .addFormDataPart("quantity", Integer.toString(n))
-                .addFormDataPart("width", Integer.toString(w - width))
-                .addFormDataPart("height", Integer.toString(h - height))
-                .addFormDataPart("type", "plain")
-                .build();
-    }
-
-    public static RequestBody bodyBuilder2(int w, int h, int n, int width, int height) {
-        return new MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("account", "Ivan's Windows")
-                .addFormDataPart("quantity", Integer.toString(n))
-                .addFormDataPart("width", Integer.toString(w - width))
-                .addFormDataPart("height", Integer.toString(h - height))
-                .addFormDataPart("type", "toughened")
+                .addFormDataPart("quantity", Integer.toString(quantity))
+                .addFormDataPart("width", Integer.toString(paneWidth))
+                .addFormDataPart("height", Integer.toString(paneHeight))
+                .addFormDataPart("type", glassType)
                 .build();
     }
 }

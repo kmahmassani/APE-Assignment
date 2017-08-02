@@ -1,39 +1,28 @@
 package com.oocode;
 
-import okhttp3.*;
-
 import java.io.IOException;
 
 public class GlassOrderer {
 
-    private RequestSender requestSender;
+    private GlassSupplier supplier;
 
-    public GlassOrderer(RequestSender requestSender) {
-        this.requestSender = requestSender;
+    public GlassOrderer(GlassSupplier supplier) {
+        this.supplier = supplier;
     }
-
-    public GlassOrderer() {
-        requestSender = new RequestSender();
-    }
-
 
     public String OrderGlass(int quantity, int windowWidth, int windowHeight, String windowModel) throws IOException {
         // the thickness of the frame depends on the model of window
-        int width = width(windowModel, true);
-        int height = width(windowModel, false);
-
-        RequestBody requestBody = BodyBuilder.bodyBuilder(windowWidth, windowHeight, quantity, width, height);
-        if (windowHeight > 120)
-            requestBody = BodyBuilder.bodyBuilder2(windowWidth, windowHeight, quantity, width, height);
+        int frameWidth = width(windowModel, true);
+        int frameHeight = width(windowModel, false);
 
         // the glass pane is the size of the window minus allowance for
         // the thickness of the frame
-        if ((windowWidth - width) * (windowHeight - height) * quantity > 20000) {
-            return requestSender.SendOrder(requestBody, "https://immense-fortress-19979.herokuapp.com/large-order");
-        }
-        else {
-            return requestSender.SendOrder(requestBody, "https://immense-fortress-19979.herokuapp.com/order");
-        }
+        int paneWidth = windowWidth - frameWidth;
+        int paneHeight = windowHeight - frameHeight;
+
+        String glassType = windowHeight > 120 ? "toughened" : "plain";
+
+        return supplier.SubmitOrder(quantity, paneWidth, paneHeight, glassType);
     }
 
     private static int width(String r, boolean b) {

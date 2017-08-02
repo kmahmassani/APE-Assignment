@@ -27,15 +27,15 @@ public class MainTest {
     public void LegacyBaseTest() throws IOException {
         RequestSender mockSender = mock(RequestSender.class);
 
-        //ArgumentCaptor<String> urlCaptor = ArgumentCaptor.forClass(String.class);
+        CAttal cAttal = new CAttal(mockSender);
 
         when(mockSender.SendOrder(any(),any())).thenReturn("");
 
-        new GlassOrderer(mockSender).OrderGlass(123, 456, 789, "Churchill");
+        new GlassOrderer(cAttal).OrderGlass(123, 456, 789, "Churchill");
 
         verify(mockSender).SendOrder(any(), contains("large"));
 
-        new GlassOrderer(mockSender).OrderGlass(48, 36, 1, "Victoria");
+        new GlassOrderer(cAttal).OrderGlass(48, 36, 1, "Victoria");
 
         verify(mockSender).SendOrder(any(), not(contains("large")));
     }
