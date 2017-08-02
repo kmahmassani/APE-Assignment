@@ -5,9 +5,19 @@ import okhttp3.*;
 import java.io.IOException;
 
 public class GlassOrderer {
-    static void OrderGlass(int quantity, int windowWidth, int windowHeight, String windowModel) throws IOException {
-        OkHttpClient client = new OkHttpClient();
 
+    private RequestSender requestSender;
+
+    public GlassOrderer(RequestSender requestSender) {
+        this.requestSender = requestSender;
+    }
+
+    public GlassOrderer() {
+        requestSender = new RequestSender();
+    }
+
+
+    public String OrderGlass(int quantity, int windowWidth, int windowHeight, String windowModel) throws IOException {
         // the thickness of the frame depends on the model of window
         int width = width(windowModel, true);
         int height = width(windowModel, false);
@@ -19,36 +29,14 @@ public class GlassOrderer {
         // the glass pane is the size of the window minus allowance for
         // the thickness of the frame
         if ((windowWidth - width) * (windowHeight - height) * quantity > 20000) {
-            Request request = new Request.Builder()
-                    .url("https://immense-fortress-19979.herokuapp.com/large-order")
-                    .method("POST", RequestBody.create(null, new byte[0]))
-                    .post(requestBody)
-                    .build();
-
-            try (Response response = client.newCall(request).execute()) {
-                try (ResponseBody body = response.body()) {
-                    assert body != null;
-                    System.out.println(body.string());
-                }
-            }
-            return;
+            return requestSender.SendOrder(requestBody, "https://immense-fortress-19979.herokuapp.com/large-order");
         }
-
-        Request request = new Request.Builder()
-                .url("https://immense-fortress-19979.herokuapp.com/order")
-                .method("POST", RequestBody.create(null, new byte[0]))
-                .post(requestBody)
-                .build();
-
-        try (Response response = client.newCall(request).execute()) {
-            try (ResponseBody body = response.body()) {
-                assert body != null;
-                System.out.println(body.string());
-            }
+        else {
+            return requestSender.SendOrder(requestBody, "https://immense-fortress-19979.herokuapp.com/order");
         }
     }
 
-    public static int width(String r, boolean b) {
+    private static int width(String r, boolean b) {
         if (!b) return h(r, b);
         if (r.equals("Churchill")) {
             return 4;
@@ -62,7 +50,7 @@ public class GlassOrderer {
         throw null; // model name isn't known
     }
 
-    public static int h(String r, boolean b) {
+    private static int h(String r, boolean b) {
         if (r.equals("Churchill")) return 3;
         if (r.equals("Victoria")) {
             return 3;

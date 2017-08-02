@@ -7,7 +7,7 @@ public class Main {
         int windowHeight = Integer.parseInt(args[1]);  // the height of the window
         String windowModel = args[3];                 // the model name of these windows
 
-        GlassOrderer.OrderGlass(quantity, windowWidth, windowHeight, windowModel);
+        System.out.println(new GlassOrderer().OrderGlass(quantity, windowWidth, windowHeight, windowModel));
     }
 
 }
