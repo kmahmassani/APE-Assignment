@@ -1,12 +1,5 @@
 package com.oocode;
 
-import org.junit.Test;
-
-import java.io.IOException;
-
-import static org.mockito.AdditionalMatchers.not;
-import static org.mockito.Mockito.*;
-
 public class MainTest {
 //    @Test
 //    public void test1() throws Exception {
@@ -23,20 +16,5 @@ public class MainTest {
 //         */
 //    }
 
-    @Test
-    public void LegacyBaseTest() throws IOException {
-        RequestSender mockSender = mock(RequestSender.class);
 
-        CAttal cAttal = new CAttal(mockSender);
-
-        when(mockSender.SendOrder(any(),any())).thenReturn("");
-
-        new GlassOrderer(cAttal).OrderGlass(123, 456, 789, "Churchill");
-
-        verify(mockSender).SendOrder(any(), contains("large"));
-
-        new GlassOrderer(cAttal).OrderGlass(48, 36, 1, "Victoria");
-
-        verify(mockSender).SendOrder(any(), not(contains("large")));
-    }
 }
