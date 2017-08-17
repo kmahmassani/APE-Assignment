@@ -14,7 +14,7 @@ import static org.mockito.Mockito.when;
 public class CAttalTest {
 
     @Test
-    public void OrdersOver20000CallLargeEndpoint() throws IOException {
+    public void PlainOrdersOver20000CallLargeEndpoint() throws IOException {
         RequestSender mockSender = mock(RequestSender.class);
 
         CAttal cAttal = new CAttal(mockSender);
@@ -22,7 +22,7 @@ public class CAttalTest {
         when(mockSender.SendOrder(any(),any())).thenReturn("");
 
         // total area is quantity * window area
-        cAttal.SubmitOrder(20001, 1,1, "");
+        cAttal.SubmitOrder(20001, 1,1, "plain");
 
         verify(mockSender).SendOrder(any(), contains("large"));
     }
@@ -53,5 +53,19 @@ public class CAttalTest {
         cAttal.SubmitOrder(19999, 1,1, "");
 
         verify(mockSender).SendOrder(any(), not(contains("large")));
+    }
+
+    @Test
+    public void ToughenedOrdersOver18000CallLargeEndpoint() throws IOException {
+        RequestSender mockSender = mock(RequestSender.class);
+
+        CAttal cAttal = new CAttal(mockSender);
+
+        when(mockSender.SendOrder(any(),any())).thenReturn("");
+
+        // total area is quantity * window area
+        cAttal.SubmitOrder(18001, 1,1, "toughened");
+
+        verify(mockSender).SendOrder(any(), contains("large"));
     }
 }

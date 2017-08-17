@@ -19,7 +19,7 @@ public class CAttal implements GlassSupplier {
     public String SubmitOrder(int quantity, int paneWidth, int paneHeight, String glassType) throws IOException {
         RequestBody requestBody = BodyBuilder.bodyBuilder(paneWidth, paneHeight, quantity, glassType);
 
-        String url = paneWidth * paneHeight * quantity > 20000 ? "https://immense-fortress-19979.herokuapp.com/large-order" : "https://immense-fortress-19979.herokuapp.com/order";
+        String url = (paneWidth * paneHeight * quantity > 20000) || (paneWidth * paneHeight * quantity > 18000 && glassType == "toughened") ? "https://immense-fortress-19979.herokuapp.com/large-order" : "https://immense-fortress-19979.herokuapp.com/order";
 
         return requestSender.SendOrder(requestBody, url);
     }
