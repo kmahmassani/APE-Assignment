@@ -20,9 +20,13 @@ public class GlassOrderer {
         int paneWidth = windowWidth - frameWidth;
         int paneHeight = windowHeight - frameHeight;
 
-        String glassType = windowHeight > 120 || (paneWidth * paneHeight > 3000) ? "toughened" : "plain";
+        String glassType = getGlassType(windowHeight, paneWidth, paneHeight);
 
         return supplier.SubmitOrder(quantity, paneWidth, paneHeight, glassType);
+    }
+
+    private String getGlassType(int windowHeight, int paneWidth, int paneHeight) {
+        return windowHeight > 120 || (paneWidth * paneHeight > 3000) ? "toughened" : "plain";
     }
 
     private static int width(String r, boolean b) {
